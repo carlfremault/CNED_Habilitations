@@ -29,7 +29,7 @@ namespace Habilitations.connexion
             }
         }
 
-        public static ConnexionBDD getInstance(string chaineConnection)
+        public static ConnexionBDD GetInstance(string chaineConnection)
         {
             if (ConnexionBDD.instance is null)
             {
@@ -103,7 +103,7 @@ namespace Habilitations.connexion
 
         public void Close()
         {
-            if (reader != null)
+            if (!(reader is null))
             {
                 reader.Close();
             }
