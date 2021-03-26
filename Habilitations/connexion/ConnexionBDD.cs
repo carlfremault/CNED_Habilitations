@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Habilitations.connexion
 {
-    class ConnexionBDD
+    public class ConnexionBDD
     {
         private MySqlConnection connection;
         private MySqlCommand command;
@@ -31,7 +31,7 @@ namespace Habilitations.connexion
 
         public static ConnexionBDD getInstance(string chaineConnection)
         {
-            if (ConnexionBDD.instance == null)
+            if (ConnexionBDD.instance is null)
             {
                 ConnexionBDD.instance = new ConnexionBDD(chaineConnection);
             }
@@ -48,7 +48,7 @@ namespace Habilitations.connexion
                     command.Parameters.Add(new MySqlParameter(parameter.Key, parameter.Value));
                 }
                 command.Prepare();
-                this.command.ExecuteNonQuery();
+                command.ExecuteNonQuery();
             }
             catch (Exception e)
             {
@@ -71,7 +71,7 @@ namespace Habilitations.connexion
 
         public Boolean Read()
         {
-            if (reader == null)
+            if (reader is null)
             {
                 return false;
             }
@@ -87,7 +87,7 @@ namespace Habilitations.connexion
 
         public object Field(String nomDeChamp)
         {
-            if (reader == null)
+            if (reader is null)
             {
                 return null;
             }

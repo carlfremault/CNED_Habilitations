@@ -1,5 +1,4 @@
-﻿
-namespace Habilitations.vue
+﻿namespace Habilitations.vue
 {
     partial class FrmHabilitations
     {
