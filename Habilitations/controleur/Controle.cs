@@ -11,10 +11,11 @@ namespace Habilitations.controleur
 {
     public class Controle
     {
+        private FrmAuthentification frmAuthentification;
         public Controle()
         {
-            FrmHabilitations frmHabilitations = new FrmHabilitations(this);
-            frmHabilitations.ShowDialog();
+            frmAuthentification = new FrmAuthentification(this);
+            frmAuthentification.ShowDialog();
         }
 
         public List<Developpeur> GetLesDeveloppeurs()
@@ -45,6 +46,21 @@ namespace Habilitations.controleur
         public void UpdatePwd(Developpeur developpeur)
         {
             AccesDonnees.UpdatePwd(developpeur);
+        }
+
+        public bool verifierAuthentification(string nom, string prenom, string text)
+        {
+            if (AccesDonnees.VerifierAuthentification(nom, prenom, text))
+            {
+                frmAuthentification.Hide();
+                FrmHabilitations frmHabilitations = new FrmHabilitations(this);
+                frmHabilitations.ShowDialog();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Habilitations.dal
     public class AccesDonnees
     {
         // private static string connectionString = "user id=habilitations;server=localhost;persistsecurityinfo=True;database=habilitations";
-        private static string connectionString = "server=192.168.1.95;user id=habilitations;password=motdepasseuser;database=habilitations;SslMode=none";
+        private static string connectionString = "server=localhost;user id=habilitations;password=motdepasseuser;database=habilitations;SslMode=none";
 
         public static List<Developpeur> GetLesDeveloppeurs()
         {
@@ -19,7 +19,7 @@ namespace Habilitations.dal
             string req = "SELECT d.iddeveloppeur as iddeveloppeur, d.nom as nom, d.prenom as prenom, d.tel as tel, d.mail as mail, p.idprofil as idprofil, p.nom as profil ";
             req += "FROM developpeur AS d JOIN profil AS p ON(d.idprofil = p.idprofil) ORDER BY nom, prenom";
             ConnexionBDD curseur = ConnexionBDD.GetInstance(connectionString);
-            curseur.ReqSelect(req);
+            curseur.ReqSelect(req, null);
             while (curseur.Read())
             {
                 Developpeur developpeur = new Developpeur((int)curseur.Field("iddeveloppeur"), (string)curseur.Field("nom"), (string)curseur.Field("prenom"), (string)curseur.Field("tel"), (string)curseur.Field("mail"), (int)curseur.Field("idprofil"), (string)curseur.Field("profil"));
@@ -35,7 +35,7 @@ namespace Habilitations.dal
             List<Profil> lesProfils = new List<Profil>();
             string req = "SELECT * FROM profil ORDER BY nom";
             ConnexionBDD curseur = ConnexionBDD.GetInstance(connectionString);
-            curseur.ReqSelect(req);
+            curseur.ReqSelect(req, null);
             while(curseur.Read())
             {
                 Profil profil = new Profil((int)curseur.Field("idprofil"), (string)curseur.Field("nom"));
@@ -104,6 +104,29 @@ namespace Habilitations.dal
                 byte[] textData = System.Text.Encoding.UTF8.GetBytes(text);
                 byte[] hash = sha.ComputeHash(textData);
                 return BitConverter.ToString(hash).Replace("-", string.Empty);
+            }
+        }
+        
+        public static bool VerifierAuthentification(string nom, string prenom, string pwd)
+        {
+            string req = "select * from developpeur d join profil p on d.idprofil = p.idprofil ";
+            req += "where d.nom = @nom and d.prenom = @prenom and d.pwd = @pwd and p.nom = 'admin';";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("@nom", nom);
+            parameters.Add("@prenom", prenom);
+            parameters.Add("@pwd", GetStringSha256Hash(pwd));
+            ConnexionBDD curseur = ConnexionBDD.GetInstance(connectionString);
+            curseur.ReqSelect(req, parameters);
+
+            if (curseur.Read())
+            {
+                curseur.Close();
+                return true;
+            }
+            else
+            {
+                curseur.Close();
+                return false;
             }
         }
     }

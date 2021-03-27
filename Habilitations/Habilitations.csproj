@@ -86,6 +86,12 @@
     </Compile>
     <Compile Include="modele\Developpeur.cs" />
     <Compile Include="modele\Profil.cs" />
+    <Compile Include="vue\FrmAuthentification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="vue\FrmAuthentification.Designer.cs">
+      <DependentUpon>FrmAuthentification.cs</DependentUpon>
+    </Compile>
     <Compile Include="vue\FrmHabilitations.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="vue\FrmAuthentification.resx">
+      <DependentUpon>FrmAuthentification.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="vue\FrmHabilitations.resx">
       <DependentUpon>FrmHabilitations.cs</DependentUpon>
     </EmbeddedResource>
