@@ -43,9 +43,12 @@ namespace Habilitations.connexion
             try
             {
                 this.command = new MySqlCommand(chaineRequete, this.connection);
-                foreach (KeyValuePair<string, object> parameter in parameters)
+                if (!(parameters is null))
                 {
-                    command.Parameters.Add(new MySqlParameter(parameter.Key, parameter.Value));
+                    foreach (KeyValuePair<string, object> parameter in parameters)
+                    {
+                        command.Parameters.Add(new MySqlParameter(parameter.Key, parameter.Value));
+                    }
                 }
                 command.Prepare();
                 command.ExecuteNonQuery();
@@ -56,11 +59,19 @@ namespace Habilitations.connexion
             }
         }
 
-        public void ReqSelect(string chaineRequete)
+        public void ReqSelect(string chaineRequete, Dictionary<string, object> parameters)
         {
             try
             {
                 this.command = new MySqlCommand(chaineRequete, connection);
+                if (!(parameters is null))
+                {
+                    foreach(KeyValuePair<string, object> parameter in parameters)
+                    {
+                        command.Parameters.Add(new MySqlParameter(parameter.Key, parameter.Value));
+                    }
+                }
+                command.Prepare();
                 this.reader = command.ExecuteReader();
             }
             catch (Exception e)
